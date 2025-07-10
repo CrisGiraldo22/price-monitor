@@ -17,9 +17,8 @@ class MonitorPrice:
         try: 
             response =requests.get(self.url, headers=headers)
             soup = BeautifulSoup(response.content, 'html.parser')
-            
-            #buscar el prcio del elemento
-            item_price = soup.find('span', class_='andes-money-amount__fraction')
+            item_price_div = soup.find('div', class_='ui-pdp-price__second-line')
+            item_price = item_price_div.find('span', class_='andes-money-amount__fraction')
             
             if not item_price:
                 print("The element was not found")
