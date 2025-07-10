@@ -4,11 +4,20 @@ from bs4 import BeautifulSoup #Parsea html y xml, encuentra elementos especifico
 import schedule # programa tareas automaticas, ejecuta funciones en horarios especificos y maneja intervalos de tiempo.
 
 class MonitorPrice: 
-    def __init__(self, url, target_price):
+     #Clase que monitorea el precio de un producto en una página web (Mercado Libre) y envía una alerta si el precio baja por debajo del objetivo.
+    
+    def __init__(self, url, target_price): 
+    #Inicializa el monitor de precios.
+
+        #param url: URL del producto a monitorear.
+        #param target_price: Precio objetivo para la alerta.
+        
         self.url = url
         self.target_price = target_price
         
-    #con está función emularemos un comportamiento humano
+    #Obtiene el precio actual del producto desde la página.
+    #return: Precio del producto como float, o None si no se puede obtener.
+        
     def get_price(self):
         headers ={
             'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -32,13 +41,18 @@ class MonitorPrice:
         except Exception as e:
             print(f"Error: {e}")
             return None
-        
+    
+    #Muestra una alerta si el precio es menor o igual al objetivo.
+    #param current_price: Precio actual del producto.  
     def show_alert(sefl, current_price):
         print("🔴 ¡PRICE ALERT!...")
         print(F"Current price: ${current_price}")
         print(f"Target price: ${sefl.target_price}")
         print("¡It's time to buy!...")
         
+        
+    #Revisa si el precio actual cumple con la condición del objetivo.
+    #return: True si el precio es igual o menor al objetivo, False en otro caso.
     def check_price(self):
         current_price = self.get_price()
         if current_price and current_price <= self.target_price:
@@ -48,6 +62,8 @@ class MonitorPrice:
             print(f"Current price: ${current_price} - It hasn't gone down yet.")
         
         return False #Continuar monitoreando 
+    
+    #Inicia el monitoreo diario del precio, revisando a las 9:00 AM.
     
     def monitor(self):
         print(f"Monitor: {self.url}")
